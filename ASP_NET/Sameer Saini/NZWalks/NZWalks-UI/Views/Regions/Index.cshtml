@@ -1,0 +1,40 @@
+﻿@using NZWalks_UI.Models.DTO
+@model IEnumerable<NZWalks_UI.Models.DTO.RegionDto>
+@{
+}
+
+<h1 class="mt-3">Regions</h1>
+
+<div  class="d-flex justify-content-end">
+    <a class="btn btn-secondary" asp-controller="Regions" asp-action="Add">Add Region</a>
+</div>
+
+<table width="'100%'">
+    <thead>
+    <tr>
+        <th width='26%'>Id</th>
+        <th width='1%'>&nbsp</th>
+        <th width='3%'>Code</th>
+        <th width='1%'>&nbsp</th>
+        <th width='10%'>Name</th>
+        <th width='1%'>&nbsp</th>
+        <th width='58%'>Image Url</th>
+    </tr>
+    </thead>
+    <tbody>
+ 
+        @foreach (var region in Model)
+        {
+            <tr>
+                <td width='26%'>@region.Id</td>
+                <th width='1%'>&nbsp</th>
+                <td width='3%'>@region.Code</td>
+                <th width='1%'>&nbsp</th>
+                <td width='10%'>@region.Name</td>
+                <th width='1%'>&nbsp</th>
+                <td width='58%'>@region.RegionImageUrl</td>
+            </tr>
+        }
+
+    </tbody>
+</table>

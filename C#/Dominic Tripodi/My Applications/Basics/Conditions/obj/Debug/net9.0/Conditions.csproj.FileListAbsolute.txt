@@ -1,0 +1,14 @@
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Conditions\bin\Debug\net9.0\Conditions.exe
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Conditions\bin\Debug\net9.0\Conditions.deps.json
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Conditions\bin\Debug\net9.0\Conditions.runtimeconfig.json
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Conditions\bin\Debug\net9.0\Conditions.dll
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Conditions\bin\Debug\net9.0\Conditions.pdb
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Conditions\obj\Debug\net9.0\Conditions.GeneratedMSBuildEditorConfig.editorconfig
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Conditions\obj\Debug\net9.0\Conditions.AssemblyInfoInputs.cache
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Conditions\obj\Debug\net9.0\Conditions.AssemblyInfo.cs
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Conditions\obj\Debug\net9.0\Conditions.csproj.CoreCompileInputs.cache
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Conditions\obj\Debug\net9.0\Conditions.dll
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Conditions\obj\Debug\net9.0\refint\Conditions.dll
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Conditions\obj\Debug\net9.0\Conditions.pdb
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Conditions\obj\Debug\net9.0\Conditions.genruntimeconfig.cache
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Conditions\obj\Debug\net9.0\ref\Conditions.dll

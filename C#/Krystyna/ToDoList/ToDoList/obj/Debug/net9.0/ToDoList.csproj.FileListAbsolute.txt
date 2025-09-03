@@ -1,0 +1,14 @@
+F:\Udemy\C#\Krystyna\ToDoList\ToDoList\bin\Debug\net9.0\ToDoList.exe
+F:\Udemy\C#\Krystyna\ToDoList\ToDoList\bin\Debug\net9.0\ToDoList.deps.json
+F:\Udemy\C#\Krystyna\ToDoList\ToDoList\bin\Debug\net9.0\ToDoList.runtimeconfig.json
+F:\Udemy\C#\Krystyna\ToDoList\ToDoList\bin\Debug\net9.0\ToDoList.dll
+F:\Udemy\C#\Krystyna\ToDoList\ToDoList\bin\Debug\net9.0\ToDoList.pdb
+F:\Udemy\C#\Krystyna\ToDoList\ToDoList\obj\Debug\net9.0\ToDoList.GeneratedMSBuildEditorConfig.editorconfig
+F:\Udemy\C#\Krystyna\ToDoList\ToDoList\obj\Debug\net9.0\ToDoList.AssemblyInfoInputs.cache
+F:\Udemy\C#\Krystyna\ToDoList\ToDoList\obj\Debug\net9.0\ToDoList.AssemblyInfo.cs
+F:\Udemy\C#\Krystyna\ToDoList\ToDoList\obj\Debug\net9.0\ToDoList.csproj.CoreCompileInputs.cache
+F:\Udemy\C#\Krystyna\ToDoList\ToDoList\obj\Debug\net9.0\ToDoList.dll
+F:\Udemy\C#\Krystyna\ToDoList\ToDoList\obj\Debug\net9.0\refint\ToDoList.dll
+F:\Udemy\C#\Krystyna\ToDoList\ToDoList\obj\Debug\net9.0\ToDoList.pdb
+F:\Udemy\C#\Krystyna\ToDoList\ToDoList\obj\Debug\net9.0\ToDoList.genruntimeconfig.cache
+F:\Udemy\C#\Krystyna\ToDoList\ToDoList\obj\Debug\net9.0\ref\ToDoList.dll

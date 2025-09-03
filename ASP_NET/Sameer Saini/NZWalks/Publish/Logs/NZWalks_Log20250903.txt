@@ -1,0 +1,162 @@
+2025-09-03 04:54:36.901 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Walks?sortBy=Name - application/json null
+2025-09-03 04:54:36.905 -04:00 [INF] Executing endpoint 'NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API)'
+2025-09-03 04:54:36.905 -04:00 [INF] Route matched with {action = "GetAll", controller = "Walks"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.String, System.String, System.String, System.Nullable`1[System.Boolean], Int32, Int32) on controller NZWalks.API.Controllers.WalksController (NZWalks.API).
+2025-09-03 04:54:36.936 -04:00 [INF] Executed DbCommand (18ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [w0].[Id], [w0].[Description], [w0].[DifficultyId], [w0].[LengthInKm], [w0].[Name], [w0].[RegionId], [w0].[WalkImageUrl], [d].[Id], [d].[Name], [r].[Id], [r].[Code], [r].[Name], [r].[RegionImageUrl]
+FROM (
+    SELECT [w].[Id], [w].[Description], [w].[DifficultyId], [w].[LengthInKm], [w].[Name], [w].[RegionId], [w].[WalkImageUrl]
+    FROM [Walks] AS [w]
+    ORDER BY [w].[Name]
+    OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+) AS [w0]
+INNER JOIN [Difficulties] AS [d] ON [w0].[DifficultyId] = [d].[Id]
+INNER JOIN [Regions] AS [r] ON [w0].[RegionId] = [r].[Id]
+ORDER BY [w0].[Name]
+2025-09-03 04:54:36.936 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NZWalks.API.Models.DTO.WalkDto, NZWalks.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-03 04:54:36.937 -04:00 [INF] Executed action NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API) in 29.9811ms
+2025-09-03 04:54:36.937 -04:00 [INF] Executed endpoint 'NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API)'
+2025-09-03 04:54:36.937 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Walks?sortBy=Name - 200 null application/json; charset=utf-8 35.2281ms
+2025-09-03 05:00:49.981 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Walks?sortBy=Name - application/json null
+2025-09-03 05:00:49.983 -04:00 [INF] Executing endpoint 'NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API)'
+2025-09-03 05:00:49.983 -04:00 [INF] Route matched with {action = "GetAll", controller = "Walks"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.String, System.String, System.String, System.Nullable`1[System.Boolean], Int32, Int32) on controller NZWalks.API.Controllers.WalksController (NZWalks.API).
+2025-09-03 05:00:50.006 -04:00 [INF] Executed DbCommand (20ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [w0].[Id], [w0].[Description], [w0].[DifficultyId], [w0].[LengthInKm], [w0].[Name], [w0].[RegionId], [w0].[WalkImageUrl], [d].[Id], [d].[Name], [r].[Id], [r].[Code], [r].[Name], [r].[RegionImageUrl]
+FROM (
+    SELECT [w].[Id], [w].[Description], [w].[DifficultyId], [w].[LengthInKm], [w].[Name], [w].[RegionId], [w].[WalkImageUrl]
+    FROM [Walks] AS [w]
+    ORDER BY [w].[Name]
+    OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+) AS [w0]
+INNER JOIN [Difficulties] AS [d] ON [w0].[DifficultyId] = [d].[Id]
+INNER JOIN [Regions] AS [r] ON [w0].[RegionId] = [r].[Id]
+ORDER BY [w0].[Name]
+2025-09-03 05:00:50.010 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NZWalks.API.Models.DTO.WalkDto, NZWalks.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-03 05:00:50.010 -04:00 [INF] Executed action NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API) in 27.2518ms
+2025-09-03 05:00:50.011 -04:00 [INF] Executed endpoint 'NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API)'
+2025-09-03 05:00:50.011 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Walks?sortBy=Name - 200 null application/json; charset=utf-8 29.5902ms
+2025-09-03 05:00:53.307 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Regions?sortBy=Name - application/json null
+2025-09-03 05:00:53.308 -04:00 [INF] Executing endpoint 'NZWalks.API.Controllers.RegionsController.GetAll (NZWalks.API)'
+2025-09-03 05:00:53.308 -04:00 [INF] Route matched with {action = "GetAll", controller = "Regions"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.String, System.String, System.String, System.Nullable`1[System.Boolean], Int32, Int32) on controller NZWalks.API.Controllers.RegionsController (NZWalks.API).
+2025-09-03 05:00:53.314 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [r].[Id], [r].[Code], [r].[Name], [r].[RegionImageUrl]
+FROM [Regions] AS [r]
+ORDER BY [r].[Name]
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+2025-09-03 05:00:53.315 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NZWalks.API.Models.DTO.RegionDto, NZWalks.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-03 05:00:53.315 -04:00 [INF] Executed action NZWalks.API.Controllers.RegionsController.GetAll (NZWalks.API) in 6.5686ms
+2025-09-03 05:00:53.316 -04:00 [INF] Executed endpoint 'NZWalks.API.Controllers.RegionsController.GetAll (NZWalks.API)'
+2025-09-03 05:00:53.316 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Regions?sortBy=Name - 200 null application/json; charset=utf-8 8.3728ms
+2025-09-03 05:00:57.415 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Walks?sortBy=Name - application/json null
+2025-09-03 05:00:57.415 -04:00 [INF] Executing endpoint 'NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API)'
+2025-09-03 05:00:57.415 -04:00 [INF] Route matched with {action = "GetAll", controller = "Walks"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.String, System.String, System.String, System.Nullable`1[System.Boolean], Int32, Int32) on controller NZWalks.API.Controllers.WalksController (NZWalks.API).
+2025-09-03 05:00:57.419 -04:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [w0].[Id], [w0].[Description], [w0].[DifficultyId], [w0].[LengthInKm], [w0].[Name], [w0].[RegionId], [w0].[WalkImageUrl], [d].[Id], [d].[Name], [r].[Id], [r].[Code], [r].[Name], [r].[RegionImageUrl]
+FROM (
+    SELECT [w].[Id], [w].[Description], [w].[DifficultyId], [w].[LengthInKm], [w].[Name], [w].[RegionId], [w].[WalkImageUrl]
+    FROM [Walks] AS [w]
+    ORDER BY [w].[Name]
+    OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+) AS [w0]
+INNER JOIN [Difficulties] AS [d] ON [w0].[DifficultyId] = [d].[Id]
+INNER JOIN [Regions] AS [r] ON [w0].[RegionId] = [r].[Id]
+ORDER BY [w0].[Name]
+2025-09-03 05:00:57.419 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NZWalks.API.Models.DTO.WalkDto, NZWalks.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-03 05:00:57.419 -04:00 [INF] Executed action NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API) in 3.9777ms
+2025-09-03 05:00:57.419 -04:00 [INF] Executed endpoint 'NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API)'
+2025-09-03 05:00:57.420 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Walks?sortBy=Name - 200 null application/json; charset=utf-8 4.6568ms
+2025-09-03 05:03:30.025 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Walks?sortBy=Name - application/json null
+2025-09-03 05:03:30.026 -04:00 [INF] Executing endpoint 'NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API)'
+2025-09-03 05:03:30.026 -04:00 [INF] Route matched with {action = "GetAll", controller = "Walks"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.String, System.String, System.String, System.Nullable`1[System.Boolean], Int32, Int32) on controller NZWalks.API.Controllers.WalksController (NZWalks.API).
+2025-09-03 05:03:30.057 -04:00 [INF] Executed DbCommand (27ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [w0].[Id], [w0].[Description], [w0].[DifficultyId], [w0].[LengthInKm], [w0].[Name], [w0].[RegionId], [w0].[WalkImageUrl], [d].[Id], [d].[Name], [r].[Id], [r].[Code], [r].[Name], [r].[RegionImageUrl]
+FROM (
+    SELECT [w].[Id], [w].[Description], [w].[DifficultyId], [w].[LengthInKm], [w].[Name], [w].[RegionId], [w].[WalkImageUrl]
+    FROM [Walks] AS [w]
+    ORDER BY [w].[Name]
+    OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+) AS [w0]
+INNER JOIN [Difficulties] AS [d] ON [w0].[DifficultyId] = [d].[Id]
+INNER JOIN [Regions] AS [r] ON [w0].[RegionId] = [r].[Id]
+ORDER BY [w0].[Name]
+2025-09-03 05:03:30.059 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NZWalks.API.Models.DTO.WalkDto, NZWalks.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-03 05:03:30.060 -04:00 [INF] Executed action NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API) in 33.0344ms
+2025-09-03 05:03:30.060 -04:00 [INF] Executed endpoint 'NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API)'
+2025-09-03 05:03:30.060 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Walks?sortBy=Name - 200 null application/json; charset=utf-8 34.858ms
+2025-09-03 05:03:32.832 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Regions?sortBy=Name - application/json null
+2025-09-03 05:03:32.832 -04:00 [INF] Executing endpoint 'NZWalks.API.Controllers.RegionsController.GetAll (NZWalks.API)'
+2025-09-03 05:03:32.832 -04:00 [INF] Route matched with {action = "GetAll", controller = "Regions"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.String, System.String, System.String, System.Nullable`1[System.Boolean], Int32, Int32) on controller NZWalks.API.Controllers.RegionsController (NZWalks.API).
+2025-09-03 05:03:32.836 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [r].[Id], [r].[Code], [r].[Name], [r].[RegionImageUrl]
+FROM [Regions] AS [r]
+ORDER BY [r].[Name]
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+2025-09-03 05:03:32.836 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NZWalks.API.Models.DTO.RegionDto, NZWalks.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-03 05:03:32.836 -04:00 [INF] Executed action NZWalks.API.Controllers.RegionsController.GetAll (NZWalks.API) in 4.1117ms
+2025-09-03 05:03:32.836 -04:00 [INF] Executed endpoint 'NZWalks.API.Controllers.RegionsController.GetAll (NZWalks.API)'
+2025-09-03 05:03:32.836 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Regions?sortBy=Name - 200 null application/json; charset=utf-8 4.6669ms
+2025-09-03 05:03:35.518 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Walks?sortBy=Name - application/json null
+2025-09-03 05:03:35.519 -04:00 [INF] Executing endpoint 'NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API)'
+2025-09-03 05:03:35.519 -04:00 [INF] Route matched with {action = "GetAll", controller = "Walks"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.String, System.String, System.String, System.Nullable`1[System.Boolean], Int32, Int32) on controller NZWalks.API.Controllers.WalksController (NZWalks.API).
+2025-09-03 05:03:35.526 -04:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [w0].[Id], [w0].[Description], [w0].[DifficultyId], [w0].[LengthInKm], [w0].[Name], [w0].[RegionId], [w0].[WalkImageUrl], [d].[Id], [d].[Name], [r].[Id], [r].[Code], [r].[Name], [r].[RegionImageUrl]
+FROM (
+    SELECT [w].[Id], [w].[Description], [w].[DifficultyId], [w].[LengthInKm], [w].[Name], [w].[RegionId], [w].[WalkImageUrl]
+    FROM [Walks] AS [w]
+    ORDER BY [w].[Name]
+    OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+) AS [w0]
+INNER JOIN [Difficulties] AS [d] ON [w0].[DifficultyId] = [d].[Id]
+INNER JOIN [Regions] AS [r] ON [w0].[RegionId] = [r].[Id]
+ORDER BY [w0].[Name]
+2025-09-03 05:03:35.527 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NZWalks.API.Models.DTO.WalkDto, NZWalks.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-03 05:03:35.528 -04:00 [INF] Executed action NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API) in 8.0689ms
+2025-09-03 05:03:35.528 -04:00 [INF] Executed endpoint 'NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API)'
+2025-09-03 05:03:35.528 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Walks?sortBy=Name - 200 null application/json; charset=utf-8 9.737ms
+2025-09-03 05:09:26.979 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Walks?sortBy=Name - application/json null
+2025-09-03 05:09:26.979 -04:00 [INF] Executing endpoint 'NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API)'
+2025-09-03 05:09:26.979 -04:00 [INF] Route matched with {action = "GetAll", controller = "Walks"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.String, System.String, System.String, System.Nullable`1[System.Boolean], Int32, Int32) on controller NZWalks.API.Controllers.WalksController (NZWalks.API).
+2025-09-03 05:09:26.996 -04:00 [INF] Executed DbCommand (10ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [w0].[Id], [w0].[Description], [w0].[DifficultyId], [w0].[LengthInKm], [w0].[Name], [w0].[RegionId], [w0].[WalkImageUrl], [d].[Id], [d].[Name], [r].[Id], [r].[Code], [r].[Name], [r].[RegionImageUrl]
+FROM (
+    SELECT [w].[Id], [w].[Description], [w].[DifficultyId], [w].[LengthInKm], [w].[Name], [w].[RegionId], [w].[WalkImageUrl]
+    FROM [Walks] AS [w]
+    ORDER BY [w].[Name]
+    OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+) AS [w0]
+INNER JOIN [Difficulties] AS [d] ON [w0].[DifficultyId] = [d].[Id]
+INNER JOIN [Regions] AS [r] ON [w0].[RegionId] = [r].[Id]
+ORDER BY [w0].[Name]
+2025-09-03 05:09:26.996 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NZWalks.API.Models.DTO.WalkDto, NZWalks.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-03 05:09:26.996 -04:00 [INF] Executed action NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API) in 17.101ms
+2025-09-03 05:09:26.996 -04:00 [INF] Executed endpoint 'NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API)'
+2025-09-03 05:09:26.996 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Walks?sortBy=Name - 200 null application/json; charset=utf-8 17.6552ms
+2025-09-03 05:09:29.471 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Regions?sortBy=Name - application/json null
+2025-09-03 05:09:29.473 -04:00 [INF] Executing endpoint 'NZWalks.API.Controllers.RegionsController.GetAll (NZWalks.API)'
+2025-09-03 05:09:29.473 -04:00 [INF] Route matched with {action = "GetAll", controller = "Regions"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.String, System.String, System.String, System.Nullable`1[System.Boolean], Int32, Int32) on controller NZWalks.API.Controllers.RegionsController (NZWalks.API).
+2025-09-03 05:09:29.481 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [r].[Id], [r].[Code], [r].[Name], [r].[RegionImageUrl]
+FROM [Regions] AS [r]
+ORDER BY [r].[Name]
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+2025-09-03 05:09:29.482 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NZWalks.API.Models.DTO.RegionDto, NZWalks.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-03 05:09:29.482 -04:00 [INF] Executed action NZWalks.API.Controllers.RegionsController.GetAll (NZWalks.API) in 9.484ms
+2025-09-03 05:09:29.483 -04:00 [INF] Executed endpoint 'NZWalks.API.Controllers.RegionsController.GetAll (NZWalks.API)'
+2025-09-03 05:09:29.483 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Regions?sortBy=Name - 200 null application/json; charset=utf-8 11.4268ms
+2025-09-03 05:09:31.088 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/Walks?sortBy=Name - application/json null
+2025-09-03 05:09:31.088 -04:00 [INF] Executing endpoint 'NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API)'
+2025-09-03 05:09:31.089 -04:00 [INF] Route matched with {action = "GetAll", controller = "Walks"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.String, System.String, System.String, System.Nullable`1[System.Boolean], Int32, Int32) on controller NZWalks.API.Controllers.WalksController (NZWalks.API).
+2025-09-03 05:09:31.095 -04:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [w0].[Id], [w0].[Description], [w0].[DifficultyId], [w0].[LengthInKm], [w0].[Name], [w0].[RegionId], [w0].[WalkImageUrl], [d].[Id], [d].[Name], [r].[Id], [r].[Code], [r].[Name], [r].[RegionImageUrl]
+FROM (
+    SELECT [w].[Id], [w].[Description], [w].[DifficultyId], [w].[LengthInKm], [w].[Name], [w].[RegionId], [w].[WalkImageUrl]
+    FROM [Walks] AS [w]
+    ORDER BY [w].[Name]
+    OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+) AS [w0]
+INNER JOIN [Difficulties] AS [d] ON [w0].[DifficultyId] = [d].[Id]
+INNER JOIN [Regions] AS [r] ON [w0].[RegionId] = [r].[Id]
+ORDER BY [w0].[Name]
+2025-09-03 05:09:31.097 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[NZWalks.API.Models.DTO.WalkDto, NZWalks.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-09-03 05:09:31.097 -04:00 [INF] Executed action NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API) in 8.6574ms
+2025-09-03 05:09:31.097 -04:00 [INF] Executed endpoint 'NZWalks.API.Controllers.WalksController.GetAll (NZWalks.API)'
+2025-09-03 05:09:31.098 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/Walks?sortBy=Name - 200 null application/json; charset=utf-8 9.8954ms

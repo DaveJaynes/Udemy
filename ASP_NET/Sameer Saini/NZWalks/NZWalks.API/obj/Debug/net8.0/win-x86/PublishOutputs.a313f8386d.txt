@@ -1,0 +1,5 @@
+C:\Udemy\ASP_NET\Sameer Saini\NZWalks\NZWalks.API\obj\Debug\net8.0\win-x86\PubTmp\Out\appsettings.Development.json
+C:\Udemy\ASP_NET\Sameer Saini\NZWalks\NZWalks.API\obj\Debug\net8.0\win-x86\PubTmp\Out\appsettings.json
+C:\Udemy\ASP_NET\Sameer Saini\NZWalks\NZWalks.API\obj\Debug\net8.0\win-x86\PubTmp\Out\NZWalks.API.pdb
+C:\Udemy\ASP_NET\Sameer Saini\NZWalks\NZWalks.API\obj\Debug\net8.0\win-x86\PubTmp\Out\Microsoft.Data.SqlClient.SNI.dll
+C:\Udemy\ASP_NET\Sameer Saini\NZWalks\NZWalks.API\obj\Debug\net8.0\win-x86\PubTmp\Out\NZWalks.API.exe

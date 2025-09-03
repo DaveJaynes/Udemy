@@ -1,0 +1,14 @@
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Operators\bin\Debug\net9.0\Operators.exe
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Operators\bin\Debug\net9.0\Operators.deps.json
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Operators\bin\Debug\net9.0\Operators.runtimeconfig.json
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Operators\bin\Debug\net9.0\Operators.dll
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Operators\bin\Debug\net9.0\Operators.pdb
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Operators\obj\Debug\net9.0\Operators.GeneratedMSBuildEditorConfig.editorconfig
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Operators\obj\Debug\net9.0\Operators.AssemblyInfoInputs.cache
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Operators\obj\Debug\net9.0\Operators.AssemblyInfo.cs
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Operators\obj\Debug\net9.0\Operators.csproj.CoreCompileInputs.cache
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Operators\obj\Debug\net9.0\Operators.dll
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Operators\obj\Debug\net9.0\refint\Operators.dll
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Operators\obj\Debug\net9.0\Operators.pdb
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Operators\obj\Debug\net9.0\Operators.genruntimeconfig.cache
+C:\Udemy\C#\Dominic Tripodi\My Applications\Basics\Operators\obj\Debug\net9.0\ref\Operators.dll

@@ -1,0 +1,166 @@
+﻿.scrollable-table {
+    height: 800px;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+}
+
+    .scrollable-table > .table {
+        width: 100%;
+    }
+
+.table {
+    font-family: 'Inter', sans-serif;
+    border-collapse: collapse;
+    font-size: 14px;
+    width: 100%;
+}
+
+    .table th {
+        background-color: #009578;
+        color: #ffffff text-align: left;
+        position: sticky;
+        top: 0;
+    }
+
+    .table th,
+    .table td {
+        padding: 6px 8px;
+        font-weight: normal;
+    }
+
+    .table tr {
+        scroll-snap-align: start;
+    }
+
+    .table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3;
+    }
+
+.short-oval-button {
+    background-color: #009578; /* Green background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    padding: 5px 25px; /* Adjust padding for oval shape */
+    font-size: 12px; /* Font size */
+    border-radius: 50px; /* Makes the button oval */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.oval-button {
+    background-color: #009578; /* Green background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    padding: 8px 25px; /* Adjust padding for oval shape */
+    font-size: 14px; /* Font size */
+    border-radius: 50px; /* Makes the button oval */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+    .oval-button:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+
+.oval-button-purple {
+    background-color: purple; /* Green background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    padding: 5px 25px; /* Adjust padding for oval shape */
+    font-size: 12px; /* Font size */
+    border-radius: 50px; /* Makes the button oval */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+p.WalksHeading {
+    font-family: 'Times New Roman', Times, serif;
+    color: #000000;
+    background-color: #ffffff;
+    font-size: 35px;
+    font-style: italic;
+    font-weight: normal;
+    text-align: center;
+}
+
+p.WalksSubHeading {
+    font-family: serif, Times;
+    color: #000000;
+    background-color: #ffffff;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: normal;
+    text-align: center;
+}
+
+p.WalksColumnHeadings {
+    font-family: 'Times New Roman', Times, serif;
+    color: #ffffff;
+    background-color: #009578;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: normal;
+    text-align: center;
+    text-decoration: underline;
+}
+
+p.WalksColumnHeadingsLeft {
+    font-family: 'Times New Roman', Times, serif;
+    color: #ffffff;
+    background-color: #009578;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: normal;
+    text-align: left;
+    text-decoration: underline;
+}
+
+p.WalksDetails {
+    font-family: 'Times New Roman', Times, serif;
+    color: black;
+    background-color: white;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: normal;
+    text-align: center;
+}
+
+p.WalksDetailsLeft {
+    font-family: 'Times New Roman', Times, serif;
+    color: black;
+    background-color: white;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: normal;
+    text-align: left;
+}
+
+p.WalksDetailsRight {
+    font-family: 'Times New Roman', Times, serif;
+    color: #ffffff;
+    background-color: #009578;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: normal;
+    text-align: right;
+}
+
+p.RadioTitle {
+    font-family: 'Times New Roman',Times, serif;
+    color: #009578;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: normal;
+    text-align: left;
+}
+
+
+p.Informational {
+    font-family: serif, Times;
+    color: purple;
+    background-color: #ffffff;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: normal;
+    text-align: center;
+}

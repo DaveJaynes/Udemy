@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "GeTGU8YXeJ8=",
+  "success": true,
+  "projectFilePath": "C:\\Udemy\\ASP_NET\\Sameer Saini\\NZWalks\\NZWalks-UI\\NZWalks-UI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\jayne\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.18\\microsoft.netcore.app.ref.8.0.18.nupkg.sha512",
+    "C:\\Users\\jayne\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x86\\8.0.18\\microsoft.netcore.app.runtime.win-x86.8.0.18.nupkg.sha512",
+    "C:\\Users\\jayne\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.18\\microsoft.windowsdesktop.app.ref.8.0.18.nupkg.sha512",
+    "C:\\Users\\jayne\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x86\\8.0.18\\microsoft.windowsdesktop.app.runtime.win-x86.8.0.18.nupkg.sha512",
+    "C:\\Users\\jayne\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.18\\microsoft.aspnetcore.app.ref.8.0.18.nupkg.sha512",
+    "C:\\Users\\jayne\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x86\\8.0.18\\microsoft.aspnetcore.app.runtime.win-x86.8.0.18.nupkg.sha512",
+    "C:\\Users\\jayne\\.nuget\\packages\\microsoft.netcore.app.host.win-x86\\8.0.18\\microsoft.netcore.app.host.win-x86.8.0.18.nupkg.sha512"
+  ],
+  "logs": []
+}

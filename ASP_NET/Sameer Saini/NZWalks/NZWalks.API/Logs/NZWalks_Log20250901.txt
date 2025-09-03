@@ -1,0 +1,1127 @@
+2025-09-01 22:00:33.348 -04:00 [INF] Executed DbCommand (263ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [NZWalksDb];
+2025-09-01 22:00:33.495 -04:00 [INF] Executed DbCommand (128ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [NZWalksDb] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2025-09-01 22:00:33.509 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 22:00:33.511 -04:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-09-01 22:00:33.534 -04:00 [INF] Executed DbCommand (20ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-09-01 22:00:33.570 -04:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-09-01 22:00:33.576 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 22:00:33.577 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-09-01 22:00:33.597 -04:00 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-09-01 22:00:33.603 -04:00 [INF] Applying migration '20250902020000_Initial Seed'.
+2025-09-01 22:00:33.628 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Difficulties] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NULL,
+    CONSTRAINT [PK_Difficulties] PRIMARY KEY ([Id])
+);
+2025-09-01 22:00:33.631 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Images] (
+    [Id] uniqueidentifier NOT NULL,
+    [FileName] nvarchar(max) NOT NULL,
+    [FileDescription] nvarchar(max) NULL,
+    [FileExtension] nvarchar(max) NOT NULL,
+    [FileSizeInBytes] bigint NOT NULL,
+    [FilePath] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Images] PRIMARY KEY ([Id])
+);
+2025-09-01 22:00:33.633 -04:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Regions] (
+    [Id] uniqueidentifier NOT NULL,
+    [Code] nvarchar(max) NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [RegionImageUrl] nvarchar(max) NULL,
+    CONSTRAINT [PK_Regions] PRIMARY KEY ([Id])
+);
+2025-09-01 22:00:33.638 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Walks] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [LengthInKm] float NOT NULL,
+    [WalkImageUrl] nvarchar(max) NULL,
+    [DifficultyId] uniqueidentifier NOT NULL,
+    [RegionId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Walks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Walks_Difficulties_DifficultyId] FOREIGN KEY ([DifficultyId]) REFERENCES [Difficulties] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Walks_Regions_RegionId] FOREIGN KEY ([RegionId]) REFERENCES [Regions] ([Id]) ON DELETE CASCADE
+);
+2025-09-01 22:00:33.704 -04:00 [INF] Executed DbCommand (65ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] ON;
+INSERT INTO [Difficulties] ([Id], [Name])
+VALUES ('54466f17-02af-48e7-8ed3-5a4a8bfacf6f', N'Easy'),
+('ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', N'Medium'),
+('f808ddcd-b5e5-4d80-b732-1ca523e48434', N'Hard');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] OFF;
+2025-09-01 22:00:33.733 -04:00 [INF] Executed DbCommand (29ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] ON;
+INSERT INTO [Regions] ([Id], [Code], [Name], [RegionImageUrl])
+VALUES ('14ceba71-4b51-4777-9b17-46602cf66153', N'BOP', N'Bay Of Plenty', NULL),
+('6884f7d7-ad1f-4101-8df3-7a6fa7387d81', N'NTL', N'Northland', NULL),
+('906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'NSN', N'Nelson', N'https://images.pexels.com/photos/13918194/pexels-photo-13918194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'WGN', N'Wellington', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f077a22e-4248-4bf6-b564-c7cf4e250263', N'STL', N'Southland', NULL),
+('f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'AKL', N'Auckland', N'https://images.pexels.com/photos/5169056/pexels-photo-5169056.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] OFF;
+2025-09-01 22:00:33.825 -04:00 [ERR] Failed executing DbCommand (91ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Description', N'DifficultyId', N'LengthInKm', N'Name', N'RegionId', N'WalkImageUrl') AND [object_id] = OBJECT_ID(N'[Walks]'))
+    SET IDENTITY_INSERT [Walks] ON;
+INSERT INTO [Walks] ([Id], [Description], [DifficultyId], [LengthInKm], [Name], [RegionId], [WalkImageUrl])
+VALUES ('04ab77f0-e145-4fbf-b641-989df24e5573', N'This coastal walk takes you along the unique Boulder Bank, a long narrow bar of rocks that extends into Tasman Bay.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 8.0E0, N'Boulder Bank Walkway', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('09601132-f92d-457c-b47e-da90e117b33c', N'Explore the beautiful Botanic Garden of Wellington on this leisurely walk, with a wide variety of plants and flowers to admire.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 2.0E0, N'Botanic Garden Walk', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('135a6e58-969f-47e1-8278-d7fbf2b3bd69', N'Explore the lush and peaceful White Pine Bush on this easy walk, with a variety of native flora and fauna to discover.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 2.0E0, N'The White Pine Bush Track', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('1cc5f2bc-ff4b-47c0-a475-1add56c6497b', N'This walk takes you along the wild and rugged coastline of Makara Beach, with breathtaking views of the Tasman Sea.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 8.1999999999999993E0, N'Makara Beach Walkway', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('1ea0b064-2d44-4324-91ee-6dd86c91b713', N'Explore the picturesque Maitai Valley on this easy walk, with a tranquil river and native bush to enjoy.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.0E0, N'Maitai Valley Walk', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('24ef9346-17e2-467e-bfc0-d062a9042bf1', N'This walk takes you to the top of Bluff Hill, with panoramic views of Bluff and the surrounding coastline.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 6.0E0, N'The Bluff Hill Walkway', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('2d9d6604-bef9-4b0a-805d-630240a29595', N'This walk provides scenic vistas of countryside farms and meadows. A pleasant stroll for a family on the weekend', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 8.9000000000000004E0, N'The Papamoa Hills Regional Park Walk', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('30d654c7-89ac-4704-8333-5065b740150b', N'This walk takes you to the summit of Mount Eden, the highest natural point in Auckland, with panoramic views of the city.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 2.0E0, N'Mount Eden Summit Walk', 'f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('327aa9f7-26f7-4ddb-8047-97464374bb63', N'This scenic walk takes you around the top of Mount Victoria, offering stunning views of Wellington and its harbor.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 3.5E0, N'Mount Victoria Loop', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('43132402-3d5e-467a-8cde-351c5c7c5dde', N'This walk takes you to the geographical centre of New Zealand, with stunning views of Nelson and its surroundings.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 1.0E0, N'Centre of New Zealand Walkway', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('a7796ab6-5426-46af-b755-65d9b9e12978', N'Experience the stunning scenery of the southern Fiordland and the coast on this challenging multi-day walk, with beautiful forest and alpine views.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 60.0E0, N'The Hump Ridge Track', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('b5aa2791-3616-4db6-ab33-c54d03d17f62', N'This walk takes you to the summit of Mount Maunganui, with stunning views of the ocean and surrounding landscape.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 11.4E0, N'Mount Maunganui Summit Walk', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('bdf28703-6d0e-4822-ad8b-e2923f4e95a2', N'This coastal walk takes you along the beautiful beaches of Takapuna and Milford, with stunning views of Rangitoto Island.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.0E0, N'Takapuna to Milford Coastal Walk', 'f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f2b56c63-eb99-475a-881c-278f3da03e3d', N'Not a walk for the faint of heart. The rugid train and steap hills provides a challenge for the most experienced hickers.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 32.0E0, N'The Kepler Track', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f31b6a64-22a9-4904-c3db-08dde871f3f6', N'This is a pleasant stroll through Sydney and into many of their scenic coves and associated parks and waterfronts.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 24.0E0, N'Sydney Downtown Walk', 'c644ee64-2189-49b2-beb8-08dde871e942', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f7578324-f025-4c86-83a9-37a7f3d8fe81', N'Explore the beautiful Cornwall Park on this leisurely walk, with a wide variety of trees, gardens, and animals to admire.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.2000000000000002E0, N'Cornwall Park Walk', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Description', N'DifficultyId', N'LengthInKm', N'Name', N'RegionId', N'WalkImageUrl') AND [object_id] = OBJECT_ID(N'[Walks]'))
+    SET IDENTITY_INSERT [Walks] OFF;
+2025-09-01 22:04:42.921 -04:00 [INF] Executed DbCommand (292ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [NZWalksDb];
+2025-09-01 22:04:43.076 -04:00 [INF] Executed DbCommand (139ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [NZWalksDb] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2025-09-01 22:04:43.089 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 22:04:43.091 -04:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-09-01 22:04:43.110 -04:00 [INF] Executed DbCommand (18ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-09-01 22:04:43.145 -04:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-09-01 22:04:43.156 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 22:04:43.157 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-09-01 22:04:43.169 -04:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-09-01 22:04:43.174 -04:00 [INF] Applying migration '20250902020433_Initial Seed'.
+2025-09-01 22:04:43.199 -04:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Difficulties] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NULL,
+    CONSTRAINT [PK_Difficulties] PRIMARY KEY ([Id])
+);
+2025-09-01 22:04:43.203 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Images] (
+    [Id] uniqueidentifier NOT NULL,
+    [FileName] nvarchar(max) NOT NULL,
+    [FileDescription] nvarchar(max) NULL,
+    [FileExtension] nvarchar(max) NOT NULL,
+    [FileSizeInBytes] bigint NOT NULL,
+    [FilePath] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Images] PRIMARY KEY ([Id])
+);
+2025-09-01 22:04:43.207 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Regions] (
+    [Id] uniqueidentifier NOT NULL,
+    [Code] nvarchar(max) NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [RegionImageUrl] nvarchar(max) NULL,
+    CONSTRAINT [PK_Regions] PRIMARY KEY ([Id])
+);
+2025-09-01 22:04:43.211 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Walks] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [LengthInKm] float NOT NULL,
+    [WalkImageUrl] nvarchar(max) NULL,
+    [DifficultyId] uniqueidentifier NOT NULL,
+    [RegionId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Walks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Walks_Difficulties_DifficultyId] FOREIGN KEY ([DifficultyId]) REFERENCES [Difficulties] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Walks_Regions_RegionId] FOREIGN KEY ([RegionId]) REFERENCES [Regions] ([Id]) ON DELETE CASCADE
+);
+2025-09-01 22:04:43.299 -04:00 [INF] Executed DbCommand (88ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] ON;
+INSERT INTO [Difficulties] ([Id], [Name])
+VALUES ('54466f17-02af-48e7-8ed3-5a4a8bfacf6f', N'Easy'),
+('ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', N'Medium'),
+('f808ddcd-b5e5-4d80-b732-1ca523e48434', N'Hard');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] OFF;
+2025-09-01 22:04:43.331 -04:00 [INF] Executed DbCommand (32ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] ON;
+INSERT INTO [Regions] ([Id], [Code], [Name], [RegionImageUrl])
+VALUES ('14ceba71-4b51-4777-9b17-46602cf66153', N'BOP', N'Bay Of Plenty', NULL),
+('6884f7d7-ad1f-4101-8df3-7a6fa7387d81', N'NTL', N'Northland', NULL),
+('906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'NSN', N'Nelson', N'https://images.pexels.com/photos/13918194/pexels-photo-13918194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'WGN', N'Wellington', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f077a22e-4248-4bf6-b564-c7cf4e250263', N'STL', N'Southland', NULL),
+('f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'AKL', N'Auckland', N'https://images.pexels.com/photos/5169056/pexels-photo-5169056.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] OFF;
+2025-09-01 22:04:43.389 -04:00 [ERR] Failed executing DbCommand (56ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Description', N'DifficultyId', N'LengthInKm', N'Name', N'RegionId', N'WalkImageUrl') AND [object_id] = OBJECT_ID(N'[Walks]'))
+    SET IDENTITY_INSERT [Walks] ON;
+INSERT INTO [Walks] ([Id], [Description], [DifficultyId], [LengthInKm], [Name], [RegionId], [WalkImageUrl])
+VALUES ('04ab77f0-e145-4fbf-b641-989df24e5573', N'This coastal walk takes you along the unique Boulder Bank, a long narrow bar of rocks that extends into Tasman Bay.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 8.0E0, N'Boulder Bank Walkway', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('09601132-f92d-457c-b47e-da90e117b33c', N'Explore the beautiful Botanic Garden of Wellington on this leisurely walk, with a wide variety of plants and flowers to admire.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 2.0E0, N'Botanic Garden Walk', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('135a6e58-969f-47e1-8278-d7fbf2b3bd69', N'Explore the lush and peaceful White Pine Bush on this easy walk, with a variety of native flora and fauna to discover.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 2.0E0, N'The White Pine Bush Track', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('1cc5f2bc-ff4b-47c0-a475-1add56c6497b', N'This walk takes you along the wild and rugged coastline of Makara Beach, with breathtaking views of the Tasman Sea.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 8.1999999999999993E0, N'Makara Beach Walkway', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('1ea0b064-2d44-4324-91ee-6dd86c91b713', N'Explore the picturesque Maitai Valley on this easy walk, with a tranquil river and native bush to enjoy.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.0E0, N'Maitai Valley Walk', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('24ef9346-17e2-467e-bfc0-d062a9042bf1', N'This walk takes you to the top of Bluff Hill, with panoramic views of Bluff and the surrounding coastline.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 6.0E0, N'The Bluff Hill Walkway', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('2d9d6604-bef9-4b0a-805d-630240a29595', N'This walk provides scenic vistas of countryside farms and meadows. A pleasant stroll for a family on the weekend', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 8.9000000000000004E0, N'The Papamoa Hills Regional Park Walk', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('30d654c7-89ac-4704-8333-5065b740150b', N'This walk takes you to the summit of Mount Eden, the highest natural point in Auckland, with panoramic views of the city.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 2.0E0, N'Mount Eden Summit Walk', 'f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('327aa9f7-26f7-4ddb-8047-97464374bb63', N'This scenic walk takes you around the top of Mount Victoria, offering stunning views of Wellington and its harbor.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 3.5E0, N'Mount Victoria Loop', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('43132402-3d5e-467a-8cde-351c5c7c5dde', N'This walk takes you to the geographical centre of New Zealand, with stunning views of Nelson and its surroundings.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 1.0E0, N'Centre of New Zealand Walkway', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('a7796ab6-5426-46af-b755-65d9b9e12978', N'Experience the stunning scenery of the southern Fiordland and the coast on this challenging multi-day walk, with beautiful forest and alpine views.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 60.0E0, N'The Hump Ridge Track', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('b5aa2791-3616-4db6-ab33-c54d03d17f62', N'This walk takes you to the summit of Mount Maunganui, with stunning views of the ocean and surrounding landscape.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 11.4E0, N'Mount Maunganui Summit Walk', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('bdf28703-6d0e-4822-ad8b-e2923f4e95a2', N'This coastal walk takes you along the beautiful beaches of Takapuna and Milford, with stunning views of Rangitoto Island.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.0E0, N'Takapuna to Milford Coastal Walk', 'f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f2b56c63-eb99-475a-881c-278f3da03e3d', N'Not a walk for the faint of heart. The rugid train and steap hills provides a challenge for the most experienced hickers.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 32.0E0, N'The Kepler Track', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f31b6a64-22a9-4904-c3db-08dde871f3f6', N'This is a pleasant stroll through Sydney and into many of their scenic coves and associated parks and waterfronts.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 24.0E0, N'Sydney Downtown Walk', 'c644ee64-2189-49b2-beb8-08dde871e942', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f7578324-f025-4c86-83a9-37a7f3d8fe81', N'Explore the beautiful Cornwall Park on this leisurely walk, with a wide variety of trees, gardens, and animals to admire.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.2000000000000002E0, N'Cornwall Park Walk', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Description', N'DifficultyId', N'LengthInKm', N'Name', N'RegionId', N'WalkImageUrl') AND [object_id] = OBJECT_ID(N'[Walks]'))
+    SET IDENTITY_INSERT [Walks] OFF;
+2025-09-01 22:06:29.917 -04:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 22:06:29.938 -04:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-09-01 22:06:29.959 -04:00 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-09-01 22:06:29.998 -04:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-09-01 22:06:30.003 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 22:06:30.004 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-09-01 22:06:30.023 -04:00 [INF] Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-09-01 22:06:30.027 -04:00 [INF] Applying migration '20250902020624_Initial Seed'.
+2025-09-01 22:06:30.052 -04:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Difficulties] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NULL,
+    CONSTRAINT [PK_Difficulties] PRIMARY KEY ([Id])
+);
+2025-09-01 22:06:30.054 -04:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Images] (
+    [Id] uniqueidentifier NOT NULL,
+    [FileName] nvarchar(max) NOT NULL,
+    [FileDescription] nvarchar(max) NULL,
+    [FileExtension] nvarchar(max) NOT NULL,
+    [FileSizeInBytes] bigint NOT NULL,
+    [FilePath] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Images] PRIMARY KEY ([Id])
+);
+2025-09-01 22:06:30.058 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Regions] (
+    [Id] uniqueidentifier NOT NULL,
+    [Code] nvarchar(max) NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [RegionImageUrl] nvarchar(max) NULL,
+    CONSTRAINT [PK_Regions] PRIMARY KEY ([Id])
+);
+2025-09-01 22:06:30.063 -04:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Walks] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [LengthInKm] float NOT NULL,
+    [WalkImageUrl] nvarchar(max) NULL,
+    [DifficultyId] uniqueidentifier NOT NULL,
+    [RegionId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Walks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Walks_Difficulties_DifficultyId] FOREIGN KEY ([DifficultyId]) REFERENCES [Difficulties] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Walks_Regions_RegionId] FOREIGN KEY ([RegionId]) REFERENCES [Regions] ([Id]) ON DELETE CASCADE
+);
+2025-09-01 22:06:30.089 -04:00 [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] ON;
+INSERT INTO [Difficulties] ([Id], [Name])
+VALUES ('54466f17-02af-48e7-8ed3-5a4a8bfacf6f', N'Easy'),
+('ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', N'Medium'),
+('f808ddcd-b5e5-4d80-b732-1ca523e48434', N'Hard');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] OFF;
+2025-09-01 22:06:30.125 -04:00 [INF] Executed DbCommand (35ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] ON;
+INSERT INTO [Regions] ([Id], [Code], [Name], [RegionImageUrl])
+VALUES ('14ceba71-4b51-4777-9b17-46602cf66153', N'BOP', N'Bay Of Plenty', NULL),
+('6884f7d7-ad1f-4101-8df3-7a6fa7387d81', N'NTL', N'Northland', NULL),
+('906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'NSN', N'Nelson', N'https://images.pexels.com/photos/13918194/pexels-photo-13918194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'WGN', N'Wellington', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f077a22e-4248-4bf6-b564-c7cf4e250263', N'STL', N'Southland', NULL),
+('f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'AKL', N'Auckland', N'https://images.pexels.com/photos/5169056/pexels-photo-5169056.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] OFF;
+2025-09-01 22:06:30.128 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Walks_DifficultyId] ON [Walks] ([DifficultyId]);
+2025-09-01 22:06:30.131 -04:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Walks_RegionId] ON [Walks] ([RegionId]);
+2025-09-01 22:06:30.135 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20250902020624_Initial Seed', N'9.0.8');
+2025-09-01 22:06:30.147 -04:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-09-01 22:08:57.457 -04:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 22:08:57.479 -04:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-09-01 22:08:57.499 -04:00 [INF] Executed DbCommand (18ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-09-01 22:08:57.530 -04:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-09-01 22:08:57.536 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 22:08:57.538 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-09-01 22:08:57.543 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-09-01 22:08:57.549 -04:00 [INF] Applying migration '20250902020844_Seed Walks'.
+2025-09-01 22:08:57.634 -04:00 [ERR] Failed executing DbCommand (71ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Description', N'DifficultyId', N'LengthInKm', N'Name', N'RegionId', N'WalkImageUrl') AND [object_id] = OBJECT_ID(N'[Walks]'))
+    SET IDENTITY_INSERT [Walks] ON;
+INSERT INTO [Walks] ([Id], [Description], [DifficultyId], [LengthInKm], [Name], [RegionId], [WalkImageUrl])
+VALUES ('04ab77f0-e145-4fbf-b641-989df24e5573', N'This coastal walk takes you along the unique Boulder Bank, a long narrow bar of rocks that extends into Tasman Bay.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 8.0E0, N'Boulder Bank Walkway', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('09601132-f92d-457c-b47e-da90e117b33c', N'Explore the beautiful Botanic Garden of Wellington on this leisurely walk, with a wide variety of plants and flowers to admire.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 2.0E0, N'Botanic Garden Walk', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('135a6e58-969f-47e1-8278-d7fbf2b3bd69', N'Explore the lush and peaceful White Pine Bush on this easy walk, with a variety of native flora and fauna to discover.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 2.0E0, N'The White Pine Bush Track', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('1cc5f2bc-ff4b-47c0-a475-1add56c6497b', N'This walk takes you along the wild and rugged coastline of Makara Beach, with breathtaking views of the Tasman Sea.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 8.1999999999999993E0, N'Makara Beach Walkway', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('1ea0b064-2d44-4324-91ee-6dd86c91b713', N'Explore the picturesque Maitai Valley on this easy walk, with a tranquil river and native bush to enjoy.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.0E0, N'Maitai Valley Walk', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('24ef9346-17e2-467e-bfc0-d062a9042bf1', N'This walk takes you to the top of Bluff Hill, with panoramic views of Bluff and the surrounding coastline.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 6.0E0, N'The Bluff Hill Walkway', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('2d9d6604-bef9-4b0a-805d-630240a29595', N'This walk provides scenic vistas of countryside farms and meadows. A pleasant stroll for a family on the weekend', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 8.9000000000000004E0, N'The Papamoa Hills Regional Park Walk', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('30d654c7-89ac-4704-8333-5065b740150b', N'This walk takes you to the summit of Mount Eden, the highest natural point in Auckland, with panoramic views of the city.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 2.0E0, N'Mount Eden Summit Walk', 'f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('327aa9f7-26f7-4ddb-8047-97464374bb63', N'This scenic walk takes you around the top of Mount Victoria, offering stunning views of Wellington and its harbor.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 3.5E0, N'Mount Victoria Loop', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('43132402-3d5e-467a-8cde-351c5c7c5dde', N'This walk takes you to the geographical centre of New Zealand, with stunning views of Nelson and its surroundings.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 1.0E0, N'Centre of New Zealand Walkway', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('a7796ab6-5426-46af-b755-65d9b9e12978', N'Experience the stunning scenery of the southern Fiordland and the coast on this challenging multi-day walk, with beautiful forest and alpine views.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 60.0E0, N'The Hump Ridge Track', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('b5aa2791-3616-4db6-ab33-c54d03d17f62', N'This walk takes you to the summit of Mount Maunganui, with stunning views of the ocean and surrounding landscape.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 11.4E0, N'Mount Maunganui Summit Walk', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('bdf28703-6d0e-4822-ad8b-e2923f4e95a2', N'This coastal walk takes you along the beautiful beaches of Takapuna and Milford, with stunning views of Rangitoto Island.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.0E0, N'Takapuna to Milford Coastal Walk', 'f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f2b56c63-eb99-475a-881c-278f3da03e3d', N'Not a walk for the faint of heart. The rugid train and steap hills provides a challenge for the most experienced hickers.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 32.0E0, N'The Kepler Track', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f31b6a64-22a9-4904-c3db-08dde871f3f6', N'This is a pleasant stroll through Sydney and into many of their scenic coves and associated parks and waterfronts.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 24.0E0, N'Sydney Downtown Walk', 'c644ee64-2189-49b2-beb8-08dde871e942', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f7578324-f025-4c86-83a9-37a7f3d8fe81', N'Explore the beautiful Cornwall Park on this leisurely walk, with a wide variety of trees, gardens, and animals to admire.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.2000000000000002E0, N'Cornwall Park Walk', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Description', N'DifficultyId', N'LengthInKm', N'Name', N'RegionId', N'WalkImageUrl') AND [object_id] = OBJECT_ID(N'[Walks]'))
+    SET IDENTITY_INSERT [Walks] OFF;
+2025-09-01 22:24:36.668 -04:00 [INF] Executed DbCommand (260ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [NZWalksDb];
+2025-09-01 22:24:36.818 -04:00 [INF] Executed DbCommand (131ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [NZWalksDb] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2025-09-01 22:24:36.832 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 22:24:36.834 -04:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-09-01 22:24:36.857 -04:00 [INF] Executed DbCommand (22ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-09-01 22:24:36.893 -04:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-09-01 22:24:36.899 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 22:24:36.900 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-09-01 22:24:36.913 -04:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-09-01 22:24:36.918 -04:00 [INF] Applying migration '20250902022430_Initial Seed'.
+2025-09-01 22:24:36.937 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Difficulties] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NULL,
+    CONSTRAINT [PK_Difficulties] PRIMARY KEY ([Id])
+);
+2025-09-01 22:24:36.940 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Images] (
+    [Id] uniqueidentifier NOT NULL,
+    [FileName] nvarchar(max) NOT NULL,
+    [FileDescription] nvarchar(max) NULL,
+    [FileExtension] nvarchar(max) NOT NULL,
+    [FileSizeInBytes] bigint NOT NULL,
+    [FilePath] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Images] PRIMARY KEY ([Id])
+);
+2025-09-01 22:24:36.944 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Regions] (
+    [Id] uniqueidentifier NOT NULL,
+    [Code] nvarchar(max) NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [RegionImageUrl] nvarchar(max) NULL,
+    CONSTRAINT [PK_Regions] PRIMARY KEY ([Id])
+);
+2025-09-01 22:24:36.952 -04:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Walks] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [LengthInKm] float NOT NULL,
+    [WalkImageUrl] nvarchar(max) NULL,
+    [DifficultyId] uniqueidentifier NOT NULL,
+    [RegionId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Walks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Walks_Difficulties_DifficultyId] FOREIGN KEY ([DifficultyId]) REFERENCES [Difficulties] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Walks_Regions_RegionId] FOREIGN KEY ([RegionId]) REFERENCES [Regions] ([Id]) ON DELETE CASCADE
+);
+2025-09-01 22:24:37.036 -04:00 [INF] Executed DbCommand (84ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] ON;
+INSERT INTO [Difficulties] ([Id], [Name])
+VALUES ('54466f17-02af-48e7-8ed3-5a4a8bfacf6f', N'Easy'),
+('ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', N'Medium'),
+('f808ddcd-b5e5-4d80-b732-1ca523e48434', N'Hard');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] OFF;
+2025-09-01 22:24:37.074 -04:00 [INF] Executed DbCommand (37ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] ON;
+INSERT INTO [Regions] ([Id], [Code], [Name], [RegionImageUrl])
+VALUES ('14ceba71-4b51-4777-9b17-46602cf66153', N'BOP', N'Bay Of Plenty', NULL),
+('6884f7d7-ad1f-4101-8df3-7a6fa7387d81', N'NTL', N'Northland', NULL),
+('906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'NSN', N'Nelson', N'https://images.pexels.com/photos/13918194/pexels-photo-13918194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'WGN', N'Wellington', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f077a22e-4248-4bf6-b564-c7cf4e250263', N'STL', N'Southland', NULL),
+('f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'AKL', N'Auckland', N'https://images.pexels.com/photos/5169056/pexels-photo-5169056.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] OFF;
+2025-09-01 22:24:37.077 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Walks_DifficultyId] ON [Walks] ([DifficultyId]);
+2025-09-01 22:24:37.079 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Walks_RegionId] ON [Walks] ([RegionId]);
+2025-09-01 22:24:37.081 -04:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20250902022430_Initial Seed', N'9.0.8');
+2025-09-01 22:24:37.089 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-09-01 22:32:31.773 -04:00 [INF] User profile is available. Using 'C:\Users\jayne\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-09-01 22:32:31.945 -04:00 [INF] Now listening on: https://localhost:7257
+2025-09-01 22:32:31.946 -04:00 [INF] Now listening on: http://localhost:5102
+2025-09-01 22:32:32.014 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-01 22:32:32.014 -04:00 [INF] Hosting environment: Development
+2025-09-01 22:32:32.014 -04:00 [INF] Content root path: C:\Udemy\ASP_NET\Sameer Saini\NZWalks\NZWalks.API
+2025-09-01 22:36:15.060 -04:00 [INF] User profile is available. Using 'C:\Users\jayne\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-09-01 22:36:15.269 -04:00 [INF] Now listening on: https://localhost:7257
+2025-09-01 22:36:15.269 -04:00 [INF] Now listening on: http://localhost:5102
+2025-09-01 22:36:15.334 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-01 22:36:15.334 -04:00 [INF] Hosting environment: Development
+2025-09-01 22:36:15.334 -04:00 [INF] Content root path: C:\Udemy\ASP_NET\Sameer Saini\NZWalks\NZWalks.API
+2025-09-01 22:36:16.449 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7257/swagger/index.html - null null
+2025-09-01 22:36:16.651 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7257/swagger/index.html - 200 null text/html;charset=utf-8 215.2885ms
+2025-09-01 22:36:16.805 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7257/_vs/browserLink - null null
+2025-09-01 22:36:16.805 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7257/_framework/aspnetcore-browser-refresh.js - null null
+2025-09-01 22:36:16.812 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7257/_framework/aspnetcore-browser-refresh.js - 200 16507 application/javascript; charset=utf-8 8.6323ms
+2025-09-01 22:36:16.917 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7257/_vs/browserLink - 200 null text/javascript; charset=UTF-8 112.6975ms
+2025-09-01 22:36:16.945 -04:00 [INF] Request starting HTTP/2 GET https://localhost:7257/swagger/v1/swagger.json - null null
+2025-09-01 22:36:16.964 -04:00 [INF] Request finished HTTP/2 GET https://localhost:7257/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 19.8328ms
+2025-09-01 22:37:36.151 -04:00 [INF] Request starting HTTP/2 POST https://localhost:7257/api/Auth/Login - application/json 65
+2025-09-01 22:37:36.392 -04:00 [INF] Executing endpoint 'NZWalks.API.Controllers.AuthController.Login (NZWalks.API)'
+2025-09-01 22:37:36.409 -04:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(NZWalks.API.Models.DTO.LoginRequestDto) on controller NZWalks.API.Controllers.AuthController (NZWalks.API).
+2025-09-01 22:37:36.577 -04:00 [INF] Executing action method NZWalks.API.Controllers.AuthController.Login (NZWalks.API) - Validation state: "Valid"
+2025-09-01 22:37:37.691 -04:00 [INF] Executed DbCommand (93ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-09-01 22:37:37.882 -04:00 [INF] Executed DbCommand (13ms) [Parameters=[@__userId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2025-09-01 22:37:37.927 -04:00 [INF] Executed action method NZWalks.API.Controllers.AuthController.Login (NZWalks.API), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 1347.6752ms.
+2025-09-01 22:37:37.934 -04:00 [INF] Executing OkObjectResult, writing value of type 'NZWalks.API.Models.DTO.LoginResponseDto'.
+2025-09-01 22:37:37.938 -04:00 [INF] Executed action NZWalks.API.Controllers.AuthController.Login (NZWalks.API) in 1526.58ms
+2025-09-01 22:37:37.939 -04:00 [INF] Executed endpoint 'NZWalks.API.Controllers.AuthController.Login (NZWalks.API)'
+2025-09-01 22:37:37.946 -04:00 [INF] Request finished HTTP/2 POST https://localhost:7257/api/Auth/Login - 200 null application/json; charset=utf-8 1794.9107ms
+2025-09-01 22:44:03.334 -04:00 [INF] Request starting HTTP/2 POST https://localhost:7257/api/Auth/Login - application/json 65
+2025-09-01 22:44:03.346 -04:00 [INF] Executing endpoint 'NZWalks.API.Controllers.AuthController.Login (NZWalks.API)'
+2025-09-01 22:44:03.346 -04:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(NZWalks.API.Models.DTO.LoginRequestDto) on controller NZWalks.API.Controllers.AuthController (NZWalks.API).
+2025-09-01 22:44:03.348 -04:00 [INF] Executing action method NZWalks.API.Controllers.AuthController.Login (NZWalks.API) - Validation state: "Valid"
+2025-09-01 22:44:03.406 -04:00 [INF] Executed DbCommand (11ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2025-09-01 22:44:03.461 -04:00 [INF] Executed DbCommand (10ms) [Parameters=[@__userId_0='?' (Size = 450)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2025-09-01 22:44:03.462 -04:00 [INF] Executed action method NZWalks.API.Controllers.AuthController.Login (NZWalks.API), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 114.3775ms.
+2025-09-01 22:44:03.463 -04:00 [INF] Executing OkObjectResult, writing value of type 'NZWalks.API.Models.DTO.LoginResponseDto'.
+2025-09-01 22:44:03.463 -04:00 [INF] Executed action NZWalks.API.Controllers.AuthController.Login (NZWalks.API) in 117.3959ms
+2025-09-01 22:44:03.463 -04:00 [INF] Executed endpoint 'NZWalks.API.Controllers.AuthController.Login (NZWalks.API)'
+2025-09-01 22:44:03.464 -04:00 [INF] Request finished HTTP/2 POST https://localhost:7257/api/Auth/Login - 200 null application/json; charset=utf-8 130.762ms
+2025-09-01 23:02:27.225 -04:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 23:02:27.245 -04:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-09-01 23:02:27.254 -04:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-09-01 23:02:27.285 -04:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-09-01 23:02:27.290 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 23:02:27.292 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-09-01 23:02:27.302 -04:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-09-01 23:02:27.307 -04:00 [INF] Applying migration '20250902030217_Initial Seed'.
+2025-09-01 23:02:27.325 -04:00 [ERR] Failed executing DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Difficulties] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NULL,
+    CONSTRAINT [PK_Difficulties] PRIMARY KEY ([Id])
+);
+2025-09-01 23:03:32.745 -04:00 [INF] Executed DbCommand (404ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [NZWalksDb];
+2025-09-01 23:03:32.908 -04:00 [INF] Executed DbCommand (147ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [NZWalksDb] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2025-09-01 23:03:32.921 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 23:03:32.923 -04:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-09-01 23:03:32.937 -04:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-09-01 23:03:32.972 -04:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-09-01 23:03:32.978 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 23:03:32.979 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-09-01 23:03:32.993 -04:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-09-01 23:03:32.998 -04:00 [INF] Applying migration '20250902030217_Initial Seed'.
+2025-09-01 23:03:33.018 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Difficulties] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NULL,
+    CONSTRAINT [PK_Difficulties] PRIMARY KEY ([Id])
+);
+2025-09-01 23:03:33.022 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Images] (
+    [Id] uniqueidentifier NOT NULL,
+    [FileName] nvarchar(max) NOT NULL,
+    [FileDescription] nvarchar(max) NULL,
+    [FileExtension] nvarchar(max) NOT NULL,
+    [FileSizeInBytes] bigint NOT NULL,
+    [FilePath] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Images] PRIMARY KEY ([Id])
+);
+2025-09-01 23:03:33.025 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Regions] (
+    [Id] uniqueidentifier NOT NULL,
+    [Code] nvarchar(max) NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [RegionImageUrl] nvarchar(max) NULL,
+    CONSTRAINT [PK_Regions] PRIMARY KEY ([Id])
+);
+2025-09-01 23:03:33.032 -04:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Walks] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [LengthInKm] float NOT NULL,
+    [WalkImageUrl] nvarchar(max) NULL,
+    [DifficultyId] uniqueidentifier NOT NULL,
+    [RegionId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Walks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Walks_Difficulties_DifficultyId] FOREIGN KEY ([DifficultyId]) REFERENCES [Difficulties] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Walks_Regions_RegionId] FOREIGN KEY ([RegionId]) REFERENCES [Regions] ([Id]) ON DELETE CASCADE
+);
+2025-09-01 23:03:33.105 -04:00 [INF] Executed DbCommand (72ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] ON;
+INSERT INTO [Difficulties] ([Id], [Name])
+VALUES ('54466f17-02af-48e7-8ed3-5a4a8bfacf6f', N'Easy'),
+('ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', N'Medium'),
+('f808ddcd-b5e5-4d80-b732-1ca523e48434', N'Hard');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] OFF;
+2025-09-01 23:03:33.137 -04:00 [INF] Executed DbCommand (32ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] ON;
+INSERT INTO [Regions] ([Id], [Code], [Name], [RegionImageUrl])
+VALUES ('14ceba71-4b51-4777-9b17-46602cf66153', N'BOP', N'Bay Of Plenty', NULL),
+('6884f7d7-ad1f-4101-8df3-7a6fa7387d81', N'NTL', N'Northland', NULL),
+('906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'NSN', N'Nelson', N'https://images.pexels.com/photos/13918194/pexels-photo-13918194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'WGN', N'Wellington', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f077a22e-4248-4bf6-b564-c7cf4e250263', N'STL', N'Southland', NULL),
+('f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'AKL', N'Auckland', N'https://images.pexels.com/photos/5169056/pexels-photo-5169056.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] OFF;
+2025-09-01 23:03:33.140 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Walks_DifficultyId] ON [Walks] ([DifficultyId]);
+2025-09-01 23:03:33.141 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Walks_RegionId] ON [Walks] ([RegionId]);
+2025-09-01 23:03:33.144 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20250902030217_Initial Seed', N'9.0.8');
+2025-09-01 23:03:33.149 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-09-01 23:25:05.317 -04:00 [INF] Executed DbCommand (220ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [NZWalksDb];
+2025-09-01 23:25:05.462 -04:00 [INF] Executed DbCommand (128ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [NZWalksDb] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2025-09-01 23:25:05.476 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 23:25:05.478 -04:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-09-01 23:25:05.494 -04:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-09-01 23:25:05.530 -04:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-09-01 23:25:05.536 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 23:25:05.538 -04:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-09-01 23:25:05.553 -04:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-09-01 23:25:05.559 -04:00 [INF] Applying migration '20250902032455_Initial Seed'.
+2025-09-01 23:25:05.580 -04:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Difficulties] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NULL,
+    CONSTRAINT [PK_Difficulties] PRIMARY KEY ([Id])
+);
+2025-09-01 23:25:05.583 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Images] (
+    [Id] uniqueidentifier NOT NULL,
+    [FileName] nvarchar(max) NOT NULL,
+    [FileDescription] nvarchar(max) NULL,
+    [FileExtension] nvarchar(max) NOT NULL,
+    [FileSizeInBytes] bigint NOT NULL,
+    [FilePath] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Images] PRIMARY KEY ([Id])
+);
+2025-09-01 23:25:05.587 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Regions] (
+    [Id] uniqueidentifier NOT NULL,
+    [Code] nvarchar(max) NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [RegionImageUrl] nvarchar(max) NULL,
+    CONSTRAINT [PK_Regions] PRIMARY KEY ([Id])
+);
+2025-09-01 23:25:05.595 -04:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Walks] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [LengthInKm] float NOT NULL,
+    [WalkImageUrl] nvarchar(max) NULL,
+    [DifficultyId] uniqueidentifier NOT NULL,
+    [RegionId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Walks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Walks_Difficulties_DifficultyId] FOREIGN KEY ([DifficultyId]) REFERENCES [Difficulties] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Walks_Regions_RegionId] FOREIGN KEY ([RegionId]) REFERENCES [Regions] ([Id]) ON DELETE CASCADE
+);
+2025-09-01 23:25:05.671 -04:00 [INF] Executed DbCommand (76ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] ON;
+INSERT INTO [Difficulties] ([Id], [Name])
+VALUES ('54466f17-02af-48e7-8ed3-5a4a8bfacf6f', N'Easy'),
+('ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', N'Medium'),
+('f808ddcd-b5e5-4d80-b732-1ca523e48434', N'Hard');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] OFF;
+2025-09-01 23:25:05.706 -04:00 [INF] Executed DbCommand (35ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] ON;
+INSERT INTO [Regions] ([Id], [Code], [Name], [RegionImageUrl])
+VALUES ('14ceba71-4b51-4777-9b17-46602cf66153', N'BOP', N'Bay Of Plenty', NULL),
+('6884f7d7-ad1f-4101-8df3-7a6fa7387d81', N'NTL', N'Northland', NULL),
+('906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'NSN', N'Nelson', N'https://images.pexels.com/photos/13918194/pexels-photo-13918194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'WGN', N'Wellington', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f077a22e-4248-4bf6-b564-c7cf4e250263', N'STL', N'Southland', NULL),
+('f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'AKL', N'Auckland', N'https://images.pexels.com/photos/5169056/pexels-photo-5169056.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] OFF;
+2025-09-01 23:25:05.757 -04:00 [ERR] Failed executing DbCommand (50ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Description', N'DifficultyId', N'LengthInKm', N'Name', N'RegionId', N'WalkImageUrl') AND [object_id] = OBJECT_ID(N'[Walks]'))
+    SET IDENTITY_INSERT [Walks] ON;
+INSERT INTO [Walks] ([Id], [Description], [DifficultyId], [LengthInKm], [Name], [RegionId], [WalkImageUrl])
+VALUES ('04ab77f0-e145-4fbf-b641-989df24e5573', N'This coastal walk takes you along the unique Boulder Bank, a long narrow bar of rocks that extends into Tasman Bay.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 8.0E0, N'Boulder Bank Walkway', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('09601132-f92d-457c-b47e-da90e117b33c', N'Explore the beautiful Botanic Garden of Wellington on this leisurely walk, with a wide variety of plants and flowers to admire.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 2.0E0, N'Botanic Garden Walk', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('135a6e58-969f-47e1-8278-d7fbf2b3bd69', N'Explore the lush and peaceful White Pine Bush on this easy walk, with a variety of native flora and fauna to discover.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 2.0E0, N'The White Pine Bush Track', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('1cc5f2bc-ff4b-47c0-a475-1add56c6497b', N'This walk takes you along the wild and rugged coastline of Makara Beach, with breathtaking views of the Tasman Sea.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 8.1999999999999993E0, N'Makara Beach Walkway', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('1ea0b064-2d44-4324-91ee-6dd86c91b713', N'Explore the picturesque Maitai Valley on this easy walk, with a tranquil river and native bush to enjoy.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.0E0, N'Maitai Valley Walk', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('24ef9346-17e2-467e-bfc0-d062a9042bf1', N'This walk takes you to the top of Bluff Hill, with panoramic views of Bluff and the surrounding coastline.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 6.0E0, N'The Bluff Hill Walkway', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('2d9d6604-bef9-4b0a-805d-630240a29595', N'This walk provides scenic vistas of countryside farms and meadows. A pleasant stroll for a family on the weekend', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 8.9000000000000004E0, N'The Papamoa Hills Regional Park Walk', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('30d654c7-89ac-4704-8333-5065b740150b', N'This walk takes you to the summit of Mount Eden, the highest natural point in Auckland, with panoramic views of the city.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 2.0E0, N'Mount Eden Summit Walk', 'f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('327aa9f7-26f7-4ddb-8047-97464374bb63', N'This scenic walk takes you around the top of Mount Victoria, offering stunning views of Wellington and its harbor.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 3.5E0, N'Mount Victoria Loop', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('43132402-3d5e-467a-8cde-351c5c7c5dde', N'This walk takes you to the geographical centre of New Zealand, with stunning views of Nelson and its surroundings.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 1.0E0, N'Centre of New Zealand Walkway', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('570810dd-5792-4706-bf93-5fd4183feca3', N'This coastal walk takes you along the beautiful beaches of Takapuna and Milford, with stunning views of Rangitoto Island.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.0E0, N'Takapuna to Milford Coastal Walk', 'f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('a7796ab6-5426-46af-b755-65d9b9e12978', N'Experience the stunning scenery of the southern Fiordland and the coast on this challenging multi-day walk, with beautiful forest and alpine views.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 60.0E0, N'The Hump Ridge Track', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('b5aa2791-3616-4db6-ab33-c54d03d17f62', N'This walk takes you to the summit of Mount Maunganui, with stunning views of the ocean and surrounding landscape.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 11.4E0, N'Mount Maunganui Summit Walk', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f2b56c63-eb99-475a-881c-278f3da03e3d', N'Not a walk for the faint of heart. The rugid train and steap hills provides a challenge for the most experienced hickers.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 32.0E0, N'The Kepler Track', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f7578324-f025-4c86-83a9-37a7f3d8fe81', N'Explore the beautiful Cornwall Park on this leisurely walk, with a wide variety of trees, gardens, and animals to admire.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.2000000000000002E0, N'Cornwall Park Walk', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Description', N'DifficultyId', N'LengthInKm', N'Name', N'RegionId', N'WalkImageUrl') AND [object_id] = OBJECT_ID(N'[Walks]'))
+    SET IDENTITY_INSERT [Walks] OFF;
+2025-09-01 23:28:49.028 -04:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 23:28:49.052 -04:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-09-01 23:28:49.063 -04:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-09-01 23:28:49.097 -04:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-09-01 23:28:49.102 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 23:28:49.103 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-09-01 23:28:49.107 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-09-01 23:28:49.112 -04:00 [INF] Applying migration '20250902032844_Initial Seed'.
+2025-09-01 23:28:49.134 -04:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Difficulties] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NULL,
+    CONSTRAINT [PK_Difficulties] PRIMARY KEY ([Id])
+);
+2025-09-01 23:28:49.138 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Images] (
+    [Id] uniqueidentifier NOT NULL,
+    [FileName] nvarchar(max) NOT NULL,
+    [FileDescription] nvarchar(max) NULL,
+    [FileExtension] nvarchar(max) NOT NULL,
+    [FileSizeInBytes] bigint NOT NULL,
+    [FilePath] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Images] PRIMARY KEY ([Id])
+);
+2025-09-01 23:28:49.140 -04:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Regions] (
+    [Id] uniqueidentifier NOT NULL,
+    [Code] nvarchar(max) NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [RegionImageUrl] nvarchar(max) NULL,
+    CONSTRAINT [PK_Regions] PRIMARY KEY ([Id])
+);
+2025-09-01 23:28:49.146 -04:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Walks] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [LengthInKm] float NOT NULL,
+    [WalkImageUrl] nvarchar(max) NULL,
+    [DifficultyId] uniqueidentifier NOT NULL,
+    [RegionId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Walks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Walks_Difficulties_DifficultyId] FOREIGN KEY ([DifficultyId]) REFERENCES [Difficulties] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Walks_Regions_RegionId] FOREIGN KEY ([RegionId]) REFERENCES [Regions] ([Id]) ON DELETE CASCADE
+);
+2025-09-01 23:28:49.191 -04:00 [INF] Executed DbCommand (45ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] ON;
+INSERT INTO [Difficulties] ([Id], [Name])
+VALUES ('54466f17-02af-48e7-8ed3-5a4a8bfacf6f', N'Easy'),
+('ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', N'Medium'),
+('f808ddcd-b5e5-4d80-b732-1ca523e48434', N'Hard');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] OFF;
+2025-09-01 23:28:49.226 -04:00 [INF] Executed DbCommand (34ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] ON;
+INSERT INTO [Regions] ([Id], [Code], [Name], [RegionImageUrl])
+VALUES ('14ceba71-4b51-4777-9b17-46602cf66153', N'BOP', N'Bay Of Plenty', NULL),
+('6884f7d7-ad1f-4101-8df3-7a6fa7387d81', N'NTL', N'Northland', NULL),
+('906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'NSN', N'Nelson', N'https://images.pexels.com/photos/13918194/pexels-photo-13918194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'WGN', N'Wellington', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f077a22e-4248-4bf6-b564-c7cf4e250263', N'STL', N'Southland', NULL),
+('f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'AKL', N'Auckland', N'https://images.pexels.com/photos/5169056/pexels-photo-5169056.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] OFF;
+2025-09-01 23:28:49.229 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Walks_DifficultyId] ON [Walks] ([DifficultyId]);
+2025-09-01 23:28:49.231 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Walks_RegionId] ON [Walks] ([RegionId]);
+2025-09-01 23:28:49.235 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20250902032844_Initial Seed', N'9.0.8');
+2025-09-01 23:28:49.243 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-09-01 23:30:11.585 -04:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 23:30:11.608 -04:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-09-01 23:30:11.619 -04:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-09-01 23:30:11.653 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-09-01 23:30:11.658 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 23:30:11.659 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-09-01 23:30:11.667 -04:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-09-01 23:30:11.672 -04:00 [INF] Applying migration '20250902033005_Seed Walks'.
+2025-09-01 23:30:11.729 -04:00 [ERR] Failed executing DbCommand (42ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Description', N'DifficultyId', N'LengthInKm', N'Name', N'RegionId', N'WalkImageUrl') AND [object_id] = OBJECT_ID(N'[Walks]'))
+    SET IDENTITY_INSERT [Walks] ON;
+INSERT INTO [Walks] ([Id], [Description], [DifficultyId], [LengthInKm], [Name], [RegionId], [WalkImageUrl])
+VALUES ('04ab77f0-e145-4fbf-b641-989df24e5573', N'This coastal walk takes you along the unique Boulder Bank, a long narrow bar of rocks that extends into Tasman Bay.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 8.0E0, N'Boulder Bank Walkway', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('09601132-f92d-457c-b47e-da90e117b33c', N'Explore the beautiful Botanic Garden of Wellington on this leisurely walk, with a wide variety of plants and flowers to admire.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 2.0E0, N'Botanic Garden Walk', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('135a6e58-969f-47e1-8278-d7fbf2b3bd69', N'Explore the lush and peaceful White Pine Bush on this easy walk, with a variety of native flora and fauna to discover.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 2.0E0, N'The White Pine Bush Track', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('1cc5f2bc-ff4b-47c0-a475-1add56c6497b', N'This walk takes you along the wild and rugged coastline of Makara Beach, with breathtaking views of the Tasman Sea.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 8.1999999999999993E0, N'Makara Beach Walkway', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('1ea0b064-2d44-4324-91ee-6dd86c91b713', N'Explore the picturesque Maitai Valley on this easy walk, with a tranquil river and native bush to enjoy.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.0E0, N'Maitai Valley Walk', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('24ef9346-17e2-467e-bfc0-d062a9042bf1', N'This walk takes you to the top of Bluff Hill, with panoramic views of Bluff and the surrounding coastline.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 6.0E0, N'The Bluff Hill Walkway', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('2d9d6604-bef9-4b0a-805d-630240a29595', N'This walk provides scenic vistas of countryside farms and meadows. A pleasant stroll for a family on the weekend', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 8.9000000000000004E0, N'The Papamoa Hills Regional Park Walk', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('30d654c7-89ac-4704-8333-5065b740150b', N'This walk takes you to the summit of Mount Eden, the highest natural point in Auckland, with panoramic views of the city.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 2.0E0, N'Mount Eden Summit Walk', 'f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('327aa9f7-26f7-4ddb-8047-97464374bb63', N'This scenic walk takes you around the top of Mount Victoria, offering stunning views of Wellington and its harbor.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 3.5E0, N'Mount Victoria Loop', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('43132402-3d5e-467a-8cde-351c5c7c5dde', N'This walk takes you to the geographical centre of New Zealand, with stunning views of Nelson and its surroundings.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 1.0E0, N'Centre of New Zealand Walkway', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('570810dd-5792-4706-bf93-5fd4183feca3', N'This coastal walk takes you along the beautiful beaches of Takapuna and Milford, with stunning views of Rangitoto Island.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.0E0, N'Takapuna to Milford Coastal Walk', 'f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('a7796ab6-5426-46af-b755-65d9b9e12978', N'Experience the stunning scenery of the southern Fiordland and the coast on this challenging multi-day walk, with beautiful forest and alpine views.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 60.0E0, N'The Hump Ridge Track', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('b5aa2791-3616-4db6-ab33-c54d03d17f62', N'This walk takes you to the summit of Mount Maunganui, with stunning views of the ocean and surrounding landscape.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 11.4E0, N'Mount Maunganui Summit Walk', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f2b56c63-eb99-475a-881c-278f3da03e3d', N'Not a walk for the faint of heart. The rugid train and steap hills provides a challenge for the most experienced hickers.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 32.0E0, N'The Kepler Track', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f7578324-f025-4c86-83a9-37a7f3d8fe81', N'Explore the beautiful Cornwall Park on this leisurely walk, with a wide variety of trees, gardens, and animals to admire.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.2000000000000002E0, N'Cornwall Park Walk', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Description', N'DifficultyId', N'LengthInKm', N'Name', N'RegionId', N'WalkImageUrl') AND [object_id] = OBJECT_ID(N'[Walks]'))
+    SET IDENTITY_INSERT [Walks] OFF;
+2025-09-01 23:50:25.278 -04:00 [INF] Executed DbCommand (275ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [NZWalksDb];
+2025-09-01 23:50:25.433 -04:00 [INF] Executed DbCommand (127ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [NZWalksDb] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2025-09-01 23:50:25.446 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 23:50:25.448 -04:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-09-01 23:50:25.462 -04:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-09-01 23:50:25.506 -04:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-09-01 23:50:25.512 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 23:50:25.513 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-09-01 23:50:25.528 -04:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-09-01 23:50:25.533 -04:00 [INF] Applying migration '20250902035018_Seed Walks'.
+2025-09-01 23:50:25.558 -04:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Difficulties] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NULL,
+    CONSTRAINT [PK_Difficulties] PRIMARY KEY ([Id])
+);
+2025-09-01 23:50:25.564 -04:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Images] (
+    [Id] uniqueidentifier NOT NULL,
+    [FileName] nvarchar(max) NOT NULL,
+    [FileDescription] nvarchar(max) NULL,
+    [FileExtension] nvarchar(max) NOT NULL,
+    [FileSizeInBytes] bigint NOT NULL,
+    [FilePath] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Images] PRIMARY KEY ([Id])
+);
+2025-09-01 23:50:25.569 -04:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Regions] (
+    [Id] uniqueidentifier NOT NULL,
+    [Code] nvarchar(max) NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [RegionImageUrl] nvarchar(max) NULL,
+    CONSTRAINT [PK_Regions] PRIMARY KEY ([Id])
+);
+2025-09-01 23:50:25.573 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Walks] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [LengthInKm] float NOT NULL,
+    [WalkImageUrl] nvarchar(max) NULL,
+    [DifficultyId] uniqueidentifier NOT NULL,
+    [RegionId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Walks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Walks_Difficulties_DifficultyId] FOREIGN KEY ([DifficultyId]) REFERENCES [Difficulties] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Walks_Regions_RegionId] FOREIGN KEY ([RegionId]) REFERENCES [Regions] ([Id]) ON DELETE CASCADE
+);
+2025-09-01 23:50:25.673 -04:00 [INF] Executed DbCommand (100ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] ON;
+INSERT INTO [Difficulties] ([Id], [Name])
+VALUES ('54466f17-02af-48e7-8ed3-5a4a8bfacf6f', N'Easy'),
+('ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', N'Medium'),
+('f808ddcd-b5e5-4d80-b732-1ca523e48434', N'Hard');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] OFF;
+2025-09-01 23:50:25.710 -04:00 [INF] Executed DbCommand (37ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] ON;
+INSERT INTO [Regions] ([Id], [Code], [Name], [RegionImageUrl])
+VALUES ('14ceba71-4b51-4777-9b17-46602cf66153', N'BOP', N'Bay Of Plenty', NULL),
+('6884f7d7-ad1f-4101-8df3-7a6fa7387d81', N'NTL', N'Northland', NULL),
+('906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'NSN', N'Nelson', N'https://images.pexels.com/photos/13918194/pexels-photo-13918194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'WGN', N'Wellington', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f077a22e-4248-4bf6-b564-c7cf4e250263', N'STL', N'Southland', NULL),
+('f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'AKL', N'Auckland', N'https://images.pexels.com/photos/5169056/pexels-photo-5169056.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] OFF;
+2025-09-01 23:50:25.744 -04:00 [INF] Executed DbCommand (33ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Description', N'DifficultyId', N'LengthInKm', N'Name', N'RegionId', N'WalkImageUrl') AND [object_id] = OBJECT_ID(N'[Walks]'))
+    SET IDENTITY_INSERT [Walks] ON;
+INSERT INTO [Walks] ([Id], [Description], [DifficultyId], [LengthInKm], [Name], [RegionId], [WalkImageUrl])
+VALUES ('1cc5f2bc-ff4b-47c0-a475-1add56c6497b', N'This walk takes you along the wild and rugged coastline of Makara Beach, with breathtaking views of the Tasman Sea.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 8.1999999999999993E0, N'Makara Beach Walkway', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Description', N'DifficultyId', N'LengthInKm', N'Name', N'RegionId', N'WalkImageUrl') AND [object_id] = OBJECT_ID(N'[Walks]'))
+    SET IDENTITY_INSERT [Walks] OFF;
+2025-09-01 23:50:25.765 -04:00 [INF] Executed DbCommand (21ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Walks_DifficultyId] ON [Walks] ([DifficultyId]);
+2025-09-01 23:50:25.772 -04:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Walks_RegionId] ON [Walks] ([RegionId]);
+2025-09-01 23:50:25.776 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20250902035018_Seed Walks', N'9.0.8');
+2025-09-01 23:50:25.783 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-09-01 23:58:43.318 -04:00 [INF] Executed DbCommand (250ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [NZWalksDb];
+2025-09-01 23:58:43.447 -04:00 [INF] Executed DbCommand (111ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [NZWalksDb] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2025-09-01 23:58:43.460 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 23:58:43.462 -04:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-09-01 23:58:43.476 -04:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-09-01 23:58:43.511 -04:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-09-01 23:58:43.516 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-09-01 23:58:43.517 -04:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-09-01 23:58:43.528 -04:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-09-01 23:58:43.533 -04:00 [INF] Applying migration '20250902035834_Seed Walks'.
+2025-09-01 23:58:43.555 -04:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Difficulties] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NULL,
+    CONSTRAINT [PK_Difficulties] PRIMARY KEY ([Id])
+);
+2025-09-01 23:58:43.557 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Images] (
+    [Id] uniqueidentifier NOT NULL,
+    [FileName] nvarchar(max) NOT NULL,
+    [FileDescription] nvarchar(max) NULL,
+    [FileExtension] nvarchar(max) NOT NULL,
+    [FileSizeInBytes] bigint NOT NULL,
+    [FilePath] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Images] PRIMARY KEY ([Id])
+);
+2025-09-01 23:58:43.560 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Regions] (
+    [Id] uniqueidentifier NOT NULL,
+    [Code] nvarchar(max) NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [RegionImageUrl] nvarchar(max) NULL,
+    CONSTRAINT [PK_Regions] PRIMARY KEY ([Id])
+);
+2025-09-01 23:58:43.568 -04:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Walks] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [LengthInKm] float NOT NULL,
+    [WalkImageUrl] nvarchar(max) NULL,
+    [DifficultyId] uniqueidentifier NOT NULL,
+    [RegionId] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_Walks] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Walks_Difficulties_DifficultyId] FOREIGN KEY ([DifficultyId]) REFERENCES [Difficulties] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Walks_Regions_RegionId] FOREIGN KEY ([RegionId]) REFERENCES [Regions] ([Id]) ON DELETE CASCADE
+);
+2025-09-01 23:58:43.647 -04:00 [INF] Executed DbCommand (80ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] ON;
+INSERT INTO [Difficulties] ([Id], [Name])
+VALUES ('54466f17-02af-48e7-8ed3-5a4a8bfacf6f', N'Easy'),
+('ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', N'Medium'),
+('f808ddcd-b5e5-4d80-b732-1ca523e48434', N'Hard');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Name') AND [object_id] = OBJECT_ID(N'[Difficulties]'))
+    SET IDENTITY_INSERT [Difficulties] OFF;
+2025-09-01 23:58:43.680 -04:00 [INF] Executed DbCommand (33ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] ON;
+INSERT INTO [Regions] ([Id], [Code], [Name], [RegionImageUrl])
+VALUES ('14ceba71-4b51-4777-9b17-46602cf66153', N'BOP', N'Bay Of Plenty', NULL),
+('6884f7d7-ad1f-4101-8df3-7a6fa7387d81', N'NTL', N'Northland', NULL),
+('906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'NSN', N'Nelson', N'https://images.pexels.com/photos/13918194/pexels-photo-13918194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'WGN', N'Wellington', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f077a22e-4248-4bf6-b564-c7cf4e250263', N'STL', N'Southland', NULL),
+('f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'AKL', N'Auckland', N'https://images.pexels.com/photos/5169056/pexels-photo-5169056.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Code', N'Name', N'RegionImageUrl') AND [object_id] = OBJECT_ID(N'[Regions]'))
+    SET IDENTITY_INSERT [Regions] OFF;
+2025-09-01 23:58:43.725 -04:00 [INF] Executed DbCommand (44ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Description', N'DifficultyId', N'LengthInKm', N'Name', N'RegionId', N'WalkImageUrl') AND [object_id] = OBJECT_ID(N'[Walks]'))
+    SET IDENTITY_INSERT [Walks] ON;
+INSERT INTO [Walks] ([Id], [Description], [DifficultyId], [LengthInKm], [Name], [RegionId], [WalkImageUrl])
+VALUES ('1cc5f2bc-ff4b-47c0-a475-1add56c6497b', N'This walk takes you along the wild and rugged coastline of Makara Beach, with breathtaking views of the Tasman Sea.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 8.1999999999999993E0, N'Makara Beach Walkway', 'cfa06ed2-bf65-4b65-93ed-c9d286ddb0de', N'https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('2d9d6604-bef9-4b0a-805d-630240a29595', N'This walk provides scenic vistas of countryside farms and meadows. A pleasant stroll for a family on the weekend', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 8.9000000000000004E0, N'The Papamoa Hills Regional Park Walk', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('30d654c7-89ac-4704-8333-5065b740150b', N'This walk takes you to the summit of Mount Eden, the highest natural point in Auckland, with panoramic views of the city.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 2.0E0, N'Mount Eden Summit Walk', 'f7248fc3-2585-4efb-8d1d-1c555f4087f6', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('43132402-3d5e-467a-8cde-351c5c7c5dde', N'This walk takes you to the geographical centre of New Zealand, with stunning views of Nelson and its surroundings.', '54466f17-02af-48e7-8ed3-5a4a8bfacf6f', 1.0E0, N'Centre of New Zealand Walkway', '906cb139-415a-4bbb-a174-1a1faf9fb1f6', N'https://images.pexels.com/photos/808466/pexels-photo-808466.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('a7796ab6-5426-46af-b755-65d9b9e12978', N'Experience the stunning scenery of the southern Fiordland and the coast on this challenging multi-day walk, with beautiful forest and alpine views.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 60.0E0, N'The Hump Ridge Track', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f2b56c63-eb99-475a-881c-278f3da03e3d', N'Not a walk for the faint of heart. The rugid train and steap hills provides a challenge for the most experienced hickers.', 'f808ddcd-b5e5-4d80-b732-1ca523e48434', 32.0E0, N'The Kepler Track', 'f077a22e-4248-4bf6-b564-c7cf4e250263', N'https://images.pexels.com/photos/2226900/pexels-photo-2226900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('f7578324-f025-4c86-83a9-37a7f3d8fe81', N'Explore the beautiful Cornwall Park on this leisurely walk, with a wide variety of trees, gardens, and animals to admire.', 'ea294873-7a8c-4c0f-bfa7-a2eb492cbf8c', 5.2000000000000002E0, N'Cornwall Park Walk', '14ceba71-4b51-4777-9b17-46602cf66153', N'https://images.pexels.com/photos/5342974/pexels-photo-5342974.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Description', N'DifficultyId', N'LengthInKm', N'Name', N'RegionId', N'WalkImageUrl') AND [object_id] = OBJECT_ID(N'[Walks]'))
+    SET IDENTITY_INSERT [Walks] OFF;
+2025-09-01 23:58:43.736 -04:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Walks_DifficultyId] ON [Walks] ([DifficultyId]);
+2025-09-01 23:58:43.743 -04:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Walks_RegionId] ON [Walks] ([RegionId]);
+2025-09-01 23:58:43.748 -04:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20250902035834_Seed Walks', N'9.0.8');
+2025-09-01 23:58:43.753 -04:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result

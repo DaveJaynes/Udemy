@@ -1,0 +1,28 @@
+<HTML>
+<HEAD>
+	<script LANGUAGE=JAVASCRIPT src=http://daves_pc/js/functions.js></script>
+	<link rel='stylesheet' href='http://daves_pc/css/styles.css'>
+</head>
+<body onLoad='DisplayImage();InitiateActiveTable()'>
+	<table width='100%' align='center'>
+		<tr><td align='center'><p class='WalksHeading'>New Zealand Walks Maintenance Utility</p></td></tr>
+	</table>
+	<br>
+	<table width='100%' align='center'>
+		<tr>
+			<td width='42%'>&nbsp</td>
+			<td width='1%' align='center'>
+				<input type='radio' id='ControllerWalks' name='Controller' value='Walks' onclick='InitiateActiveTable("Walks");GetAll(this.value)'>
+			</td>
+			<td width='3%'><p class='RadioTitle'>Walks</p></td>
+			<td width='4.6%' align='left'><button type='submit' class='short-oval-button' id='Submit' name='Submit' value='Create' onClick='Create(this.value)'>Add</button></td>
+			<td width='1%' align='center'>
+				<input type='radio' id='ControllerRegions' name='Controller' value='Regions' onclick='InitiateActiveTable("Regions");GetAll(this.value)'>
+			</td>
+			<td width='5%'><p class='RadioTitle'>Regions</p></td>
+			<td width='43.4%'>&nbsp</td>
+		</tr>
+	</table>
+	<h1 id='WalksAPIData'></h1>
+</body>
+</html>

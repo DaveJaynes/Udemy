@@ -1,0 +1,4 @@
+F:\Udemy\C#\SQL\SQL1\SQL1\obj\Debug\net9.0\SQL1.GeneratedMSBuildEditorConfig.editorconfig
+F:\Udemy\C#\SQL\SQL1\SQL1\obj\Debug\net9.0\SQL1.AssemblyInfoInputs.cache
+F:\Udemy\C#\SQL\SQL1\SQL1\obj\Debug\net9.0\SQL1.AssemblyInfo.cs
+F:\Udemy\C#\SQL\SQL1\SQL1\obj\Debug\net9.0\SQL1.csproj.CoreCompileInputs.cache

@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Udemy\\MVC\\Sameer Saini\\BloggieMVC\\Bloggie\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E60E5F64-5FB7-4AEC-AD69-5B9D34CED086}|Bloggie.Web\\Bloggie.Web.csproj|c:\\udemy\\mvc\\sameer saini\\bloggiemvc\\bloggie\\bloggie.web\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{E60E5F64-5FB7-4AEC-AD69-5B9D34CED086}|Bloggie.Web\\Bloggie.Web.csproj|solutionrelative:bloggie.web\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Udemy\\MVC\\Sameer Saini\\BloggieMVC\\Bloggie\\Bloggie.Web\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "Bloggie.Web\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Udemy\\MVC\\Sameer Saini\\BloggieMVC\\Bloggie\\Bloggie.Web\\Properties\\launchSettings.json",
+              "RelativeToolTip": "Bloggie.Web\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-30T22:25:50.523Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
